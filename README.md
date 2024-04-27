@@ -20,9 +20,9 @@ $ cd data-mining
 ### Create and activate virutal environment:
 
 ```shell
-$ python -m venv env
+$ python -m venv .venv
 
-$ .\env\Scripts\activate
+$ .\.venv\Scripts\activate
 ```
 
 ### Install dependencies:
