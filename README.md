@@ -36,3 +36,13 @@ $ pip install -r requirements.txt
 ```shell
 $ uvicorn src.app:app --reload
 ```
+
+### Datasets:
+##### Apriori:
+Groceries purchase dataset used, around 9836 rows and 171 columns (features).
+
+
+##### K-NN:
+Mushroom dataset, around 54036 rows and 9 columns(features).
+
+
