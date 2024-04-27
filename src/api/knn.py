@@ -29,7 +29,7 @@ async def predict(
                 mushroom.stem_height,
                 mushroom.stem_width,
                 mushroom.stem_color,
-                mushroom.sesson,
+                mushroom.season,
             ]
         ]
     )

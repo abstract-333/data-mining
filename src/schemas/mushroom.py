@@ -30,7 +30,7 @@ class Mushroom(BaseModel):
         ge=0,
         le=12,
     )
-    sesson: float = Field(
+    season: float = Field(
         ge=0,
         le=1.8,
     )
