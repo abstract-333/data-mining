@@ -13,10 +13,10 @@ apriori_router = APIRouter(
 SETS_COUNT: Final[int] = 9836
 
 
-@apriori_router.get("/{argument}")
+@apriori_router.get("")
 async def run_apriori(
-    argument: str,
     min_support: int,
+    argument: str | None = None,
     min_confidence: float = 0.5,
 ):
     """Number of sets 9836"""
@@ -53,13 +53,12 @@ async def run_apriori(
     return rules_dict_no_inf
 
 
-def replace_inf_values(rules_dict: list[dict], argument: str) -> list[dict]:
+def replace_inf_values(rules_dict: list[dict], argument: str | None) -> list[dict]:
     placeholder = "Infinity"
     returned_list: list = []
-
     for record in rules_dict:
         for value in record["consequents"]:
-            if value == argument:
+            if value == argument or argument is None:
                 record.pop("lift")
                 record.pop("conviction")
                 record.pop("zhangs_metric")
