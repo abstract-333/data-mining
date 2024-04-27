@@ -1,5 +1,4 @@
-# Project for university
-<br/>
+# Data Mining Project
 
 ## Running on:
 * Windows 11
