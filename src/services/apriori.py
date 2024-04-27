@@ -5,7 +5,11 @@ from mlxtend.frequent_patterns import association_rules
 
 
 class AprioriService:
-    def handle_request(self, min_support: float = 0.01, min_confidence: float = 0.6):
+    def handle_request(
+        self,
+        min_support: float = 0.01,
+        min_confidence: float = 0.6,
+    ):
 
         df = pd.read_csv("amazon_prime_users.csv")
 
