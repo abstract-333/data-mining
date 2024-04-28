@@ -1,7 +1,8 @@
 from typing import Final, Literal
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 import numpy as np
 import pandas as pd
+from pydantic import NonNegativeInt
 from services.apriori import AprioriService
 import pandas as pd
 from mlxtend.frequent_patterns import apriori, association_rules
@@ -15,7 +16,9 @@ SETS_COUNT: Final[int] = 9836
 
 @apriori_router.get("")
 async def run_apriori(
-    min_support: int,
+    min_support: int = Query(ge=0, le=SETS_COUNT),
+    offset: NonNegativeInt = 0,
+    limit: int = Query(default=10, ge=10, le=50),
     argument: str | None = None,
     min_confidence: float = 0.5,
 ):
@@ -49,12 +52,22 @@ async def run_apriori(
     )
     rules_dict = rules.to_dict(orient="records")
 
-    rules_dict_no_inf = replace_inf_values(rules_dict=rules_dict, argument=argument)
+    rules_dict_no_inf = replace_inf_values(
+        rules_dict=rules_dict,
+        argument=argument,
+        limit=limit,
+        offset=offset,
+    )
 
     return rules_dict_no_inf
 
 
-def replace_inf_values(rules_dict: list[dict], argument: str | None) -> list[dict]:
+def replace_inf_values(
+    rules_dict: list[dict],
+    argument: str | None,
+    limit: int,
+    offset: int,
+) -> list[dict]:
     placeholder = "Infinity"
     returned_list: list = []
     for record in rules_dict:
@@ -75,4 +88,7 @@ def replace_inf_values(rules_dict: list[dict], argument: str | None) -> list[dic
 
                 returned_list.append(record)
 
-    return returned_list
+    if offset + limit < len(returned_list):
+        return returned_list[offset : offset + limit]
+
+    return []
