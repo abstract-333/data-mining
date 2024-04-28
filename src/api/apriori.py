@@ -26,14 +26,15 @@ async def run_apriori(
 
     df.dropna(inplace=True)
 
-    onehot: pd.DataFrame = pd.get_dummies(data=df, sparse=False)
+    # onehot: pd.DataFrame = pd.get_dummies(data=df, sparse=False)
+    extraced_data = df.iloc[:, :-1]
 
     min_support_float: float | Literal[1] = (
         min_support / SETS_COUNT if min_support < SETS_COUNT else 1
     )
 
     frequent_itemsets: pd.DataFrame = apriori(
-        df=onehot,
+        df=extraced_data,
         min_support=min_support_float,
         use_colnames=True,
         low_memory=True,
@@ -59,13 +60,15 @@ def replace_inf_values(rules_dict: list[dict], argument: str | None) -> list[dic
     for record in rules_dict:
         for value in record["consequents"]:
             if value == argument or argument is None:
-                record.pop("lift")
-                record.pop("conviction")
-                record.pop("zhangs_metric")
-                record.pop("leverage")
-                record.pop("consequent support")
-                record.pop("antecedent support")
-                record.pop("support")
+
+                record.pop("lift", None)
+                record.pop("conviction", None)
+                record.pop("zhangs_metric", None)
+                record.pop("leverage", None)
+                record.pop("consequent support", None)
+                record.pop("antecedent support", None)
+                record.pop("support", None)
+
                 for key, value in record.items():
                     if isinstance(value, float) and np.isinf(value):
                         record[key] = placeholder
