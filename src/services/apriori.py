@@ -1,3 +1,4 @@
+from ctypes import ArgumentError
 from itertools import combinations
 from typing import Any, Final, Literal
 import numpy as np
@@ -214,14 +215,12 @@ class AprioriService:
             min_confidence=min_confidence,
         )
         rules_dict = rules.to_dict(orient="records")
-
         rules_dict = self._extract_by_argument_consequents(
             rules_dict=rules_dict,
             argument=argument,
             limit=limit,
             offset=offset,
         )
-
         return rules_dict
 
     @classmethod
@@ -233,13 +232,15 @@ class AprioriService:
         offset: int,
     ) -> list[dict]:
         returned_list: list = []
-        for record in rules_dict:
-            for value in record["consequents"]:
-                if value == argument or argument is None:
 
+        if argument:
+            for record in rules_dict:
+                if argument in record["consequents"]:
                     returned_list.append(record)
+        else:
+            returned_list = rules_dict
 
         if offset + limit < len(returned_list):
             return returned_list[offset : offset + limit]
 
-        return []
+        return returned_list
