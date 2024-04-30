@@ -10,12 +10,12 @@ knn_router = APIRouter(
 
 
 @knn_router.post("")
-async def predict(
+async def classify_mushroom(
     mushroom: Mushroom,
     k: NonNegativeInt = 3,
 ):
-    prediction = KNNService().knn(
+    classification = KNNService().knn(
         mushroom_data=mushroom,
         k=k,
     )
-    return {"prediction": "Edible" if prediction[0] == 0 else "Not Edible"}
+    return {"prediction": "Edible" if classification[0] == 0 else "Not Edible"}
