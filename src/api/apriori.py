@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Query
 from pydantic import NonNegativeInt
+from schemas.products import PRODUCTS_LIST
 from services.apriori import AprioriService
 
 
@@ -11,10 +12,10 @@ apriori_router = APIRouter(
 
 @apriori_router.get("")
 async def run_apriori(
-    min_support: int = Query(ge=0, le=AprioriService.SETS_COUNT),
+    argument: str | None = None,
+    min_support: int = Query(ge=10, le=AprioriService.SETS_COUNT),
     offset: NonNegativeInt = 0,
     limit: int = Query(default=10, ge=10, le=50),
-    argument: str | None = None,
     min_confidence: float = 0.5,
 ):
     """Number of sets 9836"""
@@ -25,3 +26,8 @@ async def run_apriori(
         offset=offset,
         argument=argument,
     )
+
+
+@apriori_router.get("/products/all")
+async def get_all_products() -> list[str]:
+    return PRODUCTS_LIST
