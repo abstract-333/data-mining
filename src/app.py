@@ -19,7 +19,6 @@ def app_factory() -> FastAPI:
     )
     fastapi_app.include_router(router=apriori_router)
     fastapi_app.include_router(router=knn_router)
-
     return fastapi_app
 
 
