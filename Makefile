@@ -1,7 +1,7 @@
 .PHONY: run
 run:
-	uvicorn src.app:app --reload
+	uvicorn --factory src.app:app_factory --reload
 
 .PHONY: android
 android:
-	uvicorn src.app:app --reload --host 0.0.0.0
+	uvicorn --factory src.app:app_factory --reload --host 0.0.0.0
