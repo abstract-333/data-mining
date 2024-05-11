@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 from brotli_asgi import BrotliMiddleware
-from api.apriori import apriori_router
-from api.knn import knn_router
+from api.apriori import AprioriRouter
+from api.knn import KNNRouter
 
 
 def app_factory() -> FastAPI:
@@ -17,8 +17,8 @@ def app_factory() -> FastAPI:
         quality=6,
         minimum_size=1000,
     )
-    fastapi_app.include_router(router=apriori_router)
-    fastapi_app.include_router(router=knn_router)
+    fastapi_app.include_router(router=AprioriRouter().router)
+    fastapi_app.include_router(router=KNNRouter().router)
     return fastapi_app
 
 
