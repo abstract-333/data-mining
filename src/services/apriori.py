@@ -193,7 +193,7 @@ class AprioriService:
         offset: int,
         min_support: float = 0.01,
         min_confidence: float = 0.6,
-        argument: str | None = None,
+        arguments: list[str] = [],
     ) -> list[dict[str, list | float]] | None:
 
         self.df.dropna(inplace=True)
@@ -216,7 +216,7 @@ class AprioriService:
         rules_dict = rules.to_dict(orient="records")
         rules_dict = self._extract_by_argument_consequents(
             rules_dict=rules_dict,
-            argument=argument,
+            arguments=arguments,
             limit=limit,
             offset=offset,
         )
@@ -225,16 +225,18 @@ class AprioriService:
     @classmethod
     def _extract_by_argument_consequents(
         cls,
-        rules_dict: list[dict],
-        argument: str | None,
         limit: int,
         offset: int,
+        rules_dict: list[dict],
+        arguments: list[str] = [],
     ) -> list[dict]:
         returned_list: list = []
 
-        if argument:
+        if len(arguments) != 0:
             for record in rules_dict:
-                if argument in record["consequents"]:
+                for argument in arguments:
+                    if argument not in record["antecedents"]:
+                        break
                     returned_list.append(record)
         else:
             returned_list = rules_dict

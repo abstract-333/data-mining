@@ -14,7 +14,7 @@ class AprioriRouter:
         self.router.add_api_route(
             path="",
             endpoint=self.run_apriori,
-            methods=["Get"],
+            methods=["Post"],
         )
         self.router.add_api_route(
             path="/products/all",
@@ -24,7 +24,7 @@ class AprioriRouter:
 
     async def run_apriori(
         self,
-        argument: str | None = None,
+        arguments: list[str] = [],
         min_support: int = Query(ge=10, le=AprioriService.SETS_COUNT),
         offset: NonNegativeInt = 0,
         limit: int = Query(default=10, ge=10, le=50),
@@ -36,7 +36,7 @@ class AprioriRouter:
             min_confidence=min_confidence,
             limit=limit,
             offset=offset,
-            argument=argument,
+            arguments=arguments,
         )
 
     @staticmethod

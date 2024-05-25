@@ -45,3 +45,4 @@ $ uvicorn src.app:app --reload
 [Mushroom dataset](https://www.kaggle.com/datasets/prishasawhney/mushroom-dataset), around 54036 rows and 9 columns(features).
 
 
+ 
